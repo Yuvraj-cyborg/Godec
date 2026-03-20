@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func main() {
+func encode() {
 	file,err := os.Open("../../assets/eren.jpg")
 	
 	if err != nil {

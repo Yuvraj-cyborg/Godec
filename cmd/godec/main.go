@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	file,err := os.Open("../../assets/power.jpeg")
+	file,err := os.Open("./assets/power.jpeg")
 	
 	if err != nil {
 		log.Fatal(err)

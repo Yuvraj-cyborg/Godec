@@ -1,3 +1,3 @@
 ## Godec - An Image codec
 
-A mini image codec in go, would be writing more later :)
+A Minimal Lossless Image Codec in Go, would be writing more later :)
