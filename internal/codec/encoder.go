@@ -4,24 +4,40 @@ import (
 	"os"
 	"image"
 	"fmt"
-	"log"
+	_ "image/jpeg"
+	_ "image/png"
 )
 
-func encode() {
-	file,err := os.Open("../../assets/eren.jpg")
+func Encode(path string) error {
+	file,err := os.Open(path)
 	
+	var pixels []uint8
+
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	defer file.Close()
 
-	img, imageType, err := image.Decode(file)
+	img, _, err := image.Decode(file)
 
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	fmt.Printf("Image format: %s\n", imageType)
-	fmt.Printf("Image bounds: %v\n", img.Bounds())
+	bounds := img.Bounds()
+	
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+        for x := bounds.Min.X; x < bounds.Max.X; x++ {
+        	r,g,b,_ := img.At(x,y).RGBA()
+						pixels = append(pixels, uint8(r>>8))
+						pixels = append(pixels, uint8(g>>8))
+						pixels = append(pixels, uint8(b>>8))
+				}
+    }
+
+	fmt.Println(pixels)
+
+	return nil
+
 }

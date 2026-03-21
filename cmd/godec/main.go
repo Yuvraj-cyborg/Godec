@@ -1,28 +1,15 @@
-package main
+package main 
 
-import (
-	"os"
-	"image"
-	_ "image/jpeg"
+import ( 
+	"github.com/Yuvraj-cyborg/godec/internal/codec"
 	"fmt"
-	"log"
 )
 
-func main() {
-	file,err := os.Open("./assets/power.jpeg")
-	
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	defer file.Close()
-
-	img, imageType, err := image.Decode(file)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("Image format: %s\n", imageType)
-	fmt.Printf("Image bounds: %v\n", img.Bounds())
+func main(){
+	var path = "./assets/red.png"
+	err := codec.Encode(path)	
+	fmt.Println(err)
 }
+
+
