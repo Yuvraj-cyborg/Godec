@@ -30,14 +30,33 @@ func Encode(path string) error {
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
         for x := bounds.Min.X; x < bounds.Max.X; x++ {
         	r,g,b,_ := img.At(x,y).RGBA()
-						pixels = append(pixels, uint8(r>>8))
-						pixels = append(pixels, uint8(g>>8))
-						pixels = append(pixels, uint8(b>>8))
-				}
+			R8 := uint8(r >> 8)
+			G8 := uint8(g >> 8)
+			B8 := uint8(b >> 8)
+
+			brightness := (int(R8) + int(G8) + int(B8)) / 3
+			pixels = append(pixels, brightness)
+		}
     }
+
+	//fmt.Println(pixels)
+
+	deltaEncode(pixels)
 
 	fmt.Println(pixels)
 
 	return nil
+}
 
+func deltaEncode(input []uint8) []int16 {
+	if len(input) == 0 {
+		return []int16{}
+	}
+
+	output := make([]int16, len(input))
+	output[0] = int16(input[0])
+	for i := 1; i < len(input); i++ {
+		output[i] = int16(input[i]) - int16(input[i-1])
+	}
+	return output
 }
