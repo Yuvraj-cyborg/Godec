@@ -8,6 +8,11 @@ import (
 	_ "image/png"
 )
 
+type Run struct {
+   Value int16
+   Count int16
+}
+
 func Encode(path string) error {
 	file,err := os.Open(path)
 	
@@ -35,15 +40,15 @@ func Encode(path string) error {
 			B8 := uint8(b >> 8)
 
 			brightness := (int(R8) + int(G8) + int(B8)) / 3
-			pixels = append(pixels, brightness)
+			pixels = append(pixels, uint8(brightness))
 		}
     }
 
 	//fmt.Println(pixels)
 
-	deltaEncode(pixels)
+	delta := deltaEncode(pixels)
 
-	fmt.Println(pixels)
+	fmt.Println(delta)
 
 	return nil
 }
@@ -60,3 +65,8 @@ func deltaEncode(input []uint8) []int16 {
 	}
 	return output
 }
+
+func rleEncode(input []int16) []Run {
+	
+}
+
