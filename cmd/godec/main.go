@@ -1,17 +1,13 @@
-package main 
+package main
 
-import ( 
-	"github.com/Yuvraj-cyborg/godec/internal/codec"
-
+import (
 	"fmt"
+	"github.com/Yuvraj-cyborg/godec/internal/codec"
 )
 
-
-func main(){
-	var path = "./assets/chris.jpeg"
-	err := codec.Encode(path)
-
-	fmt.Println(err)
+func main() {
+	err := codec.Decode("out.gdc")
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 }
-
-

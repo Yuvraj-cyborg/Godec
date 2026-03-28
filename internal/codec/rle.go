@@ -26,3 +26,14 @@ func rleEncode(input []int16) []types.Run {
 	return output
 }
 
+func RLEDecode(runs []types.Run) []int16 {
+	var output []int16
+
+	for _, run := range runs {
+		for i := 0; i < int(run.Count); i++ {
+			output = append(output, run.Value)
+		}
+	}
+
+	return output
+}

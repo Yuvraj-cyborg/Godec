@@ -12,3 +12,28 @@ func deltaEncode(input []uint8) []int16 {
 	}
 	return output
 }
+
+func DeltaDecode(delta []int16) []uint8 {
+	if len(delta) == 0 {
+		return []uint8{}
+	}
+
+	output := make([]uint8, len(delta))
+	output[0] = uint8(delta[0])
+
+	for i := 1; i < len(delta); i++ {
+		val := int(output[i-1]) + int(delta[i])
+
+		// clamp just in case
+		if val < 0 {
+			val = 0
+		}
+		if val > 255 {
+			val = 255
+		}
+
+		output[i] = uint8(val)
+	}
+
+	return output
+}
