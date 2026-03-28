@@ -7,7 +7,7 @@ import (
 
 
 func main(){
-	var path = "./assets/red.png"
+	var path = "./assets/chris.jpeg"
 	err := codec.Encode(path)	
 	fmt.Println(err)
 }
