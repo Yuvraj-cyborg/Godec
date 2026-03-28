@@ -1,4 +1,4 @@
-package codec
+package types
 
 type Run struct {
 	Value int16

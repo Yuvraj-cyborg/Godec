@@ -3,9 +3,11 @@ package codec
 import (
 	"os"
 	"image"
-	"fmt"
+	//"fmt"
 	_ "image/jpeg"
 	_ "image/png"
+	"github.com/Yuvraj-cyborg/godec/internal/format"
+
 )
 
 func Encode(path string) error {
@@ -26,6 +28,8 @@ func Encode(path string) error {
 	}
 
 	bounds := img.Bounds()
+	width := bounds.Dx()
+	height := bounds.Dy()
 	
 	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
         for x := bounds.Min.X; x < bounds.Max.X; x++ {
@@ -40,10 +44,13 @@ func Encode(path string) error {
     }
 
 	//fmt.Println(pixels)
-
 	delta := deltaEncode(pixels)
-	rle_encoded := rleEncode(delta)
-	fmt.Println(rle_encoded)
+	runs := rleEncode(delta)
+
+	err = format.WriteGDC("out.gdc", width, height, runs)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
