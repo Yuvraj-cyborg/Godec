@@ -8,7 +8,7 @@ func rleEncode(input []int16) []types.Run {
 	var output []types.Run
 
 	var current int16 = input[0]
-	var count int16 = 1
+	var count int = 1
 
 	for i := 1; i < len(input); i++ {
 		if input[i] == current {
@@ -30,7 +30,7 @@ func RLEDecode(runs []types.Run) []int16 {
 	var output []int16
 
 	for _, run := range runs {
-		for i := 0; i < int(run.Count); i++ {
+		for i := 0; i < run.Count; i++ {
 			output = append(output, run.Value)
 		}
 	}

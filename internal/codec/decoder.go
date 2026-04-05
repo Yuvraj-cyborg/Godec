@@ -56,7 +56,7 @@ func Decode(path string) error {
 		}
 
 		value := int16(int8(buf[0]))
-		count := int16(buf[1])
+		count := int(buf[1])
 
 		runs = append(runs, types.Run{
 			Value: value,
@@ -68,15 +68,18 @@ func Decode(path string) error {
 
 	pixels := DeltaDecode(delta)
 
+	want := int64(width) * int64(height)
+	if int64(len(pixels)) != want {
+		return fmt.Errorf("pixel count mismatch: got %d samples, expected %d×%d=%d (corrupt .gdc or format bug)",
+			len(pixels), width, height, want)
+	}
 
 	img := image.NewGray(image.Rect(0, 0, int(width), int(height)))
 
-	index := 0
-	for y := 0; y < int(height); y++ {
-		for x := 0; x < int(width); x++ {
-			img.SetGray(x, y, color.Gray{Y: pixels[index]})
-			index++
-		}
+	for i := range pixels {
+		x := i % int(width)
+		y := i / int(width)
+		img.SetGray(x, y, color.Gray{Y: pixels[i]})
 	}
 
 	out, err := os.Create("output.png")
