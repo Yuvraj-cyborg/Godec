@@ -31,16 +31,15 @@ func WriteGDC(path string, width int, height int, runs []types.Run) error {
 
 	// Each logical run may be split into multiple (value,count) pairs when count > 255.
 	// The header must store the number of pairs on disk, not len(runs), or the decoder stops early.
+	// Must mirror the write loop below: one terminal pair is always written (even if count were 0).
 	pairCount := 0
 	for _, run := range runs {
-		c := int(run.Count)
-		for c > 255 {
+		remaining := run.Count
+		for remaining > 255 {
 			pairCount++
-			c -= 255
+			remaining -= 255
 		}
-		if c > 0 {
-			pairCount++
-		}
+		pairCount++
 	}
 
 	if err := binary.Write(file, binary.LittleEndian, int32(pairCount)); err != nil {
